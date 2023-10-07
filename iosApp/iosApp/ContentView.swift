@@ -5,7 +5,9 @@ struct ContentView: View {
 	let greet = Greeting().greet()
 
 	var body: some View {
-		Text(greet)
+        let preferences = SharedPrefrences()
+        let mobileNumber = preferences.getMobileNumber()
+		Text("mobile Number -> \(mobileNumber)")
 	}
 }
 

@@ -4,11 +4,22 @@ plugins {
     id("com.android.library")
 }
 
+val mokoMvvmVersion = "0.16.1"
+
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
 
-    android {
+    targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).all {
+        binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
+            export("dev.icerock.moko:mvvm-core:$mokoMvvmVersion")
+            export("dev.icerock.moko:mvvm-flow:$mokoMvvmVersion")
+            export("dev.icerock.moko:mvvm-livedata:0.16.1")
+            export("dev.icerock.moko:mvvm-state:0.16.1")
+        }
+    }
+
+    androidTarget {
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
@@ -27,6 +38,7 @@ kotlin {
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "shared"
+            isStatic = true
         }
     }
     
@@ -34,6 +46,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 //put your multiplatform dependencies here
+                api("dev.icerock.moko:mvvm-core:0.16.1")
+                api("dev.icerock.moko:mvvm-flow:0.16.1")
+                api("dev.icerock.moko:mvvm-livedata:0.16.1")
+                api("dev.icerock.moko:mvvm-state:0.16.1")
+                api("dev.icerock.moko:mvvm-livedata-resources:0.16.1")
+                api("dev.icerock.moko:mvvm-flow-resources:0.16.1")
             }
         }
         val commonTest by getting {

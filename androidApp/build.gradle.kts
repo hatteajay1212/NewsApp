@@ -46,4 +46,5 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.5.1")
     implementation("androidx.compose.material3:material3:1.1.2")
     implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.navigation:navigation-compose:2.7.4")
 }
