@@ -109,7 +109,8 @@ fun NewsHomeComposable(navController : NavHostController,viewModel : NewsHomeVie
         }
 
         Spacer(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(16.dp)
         )
 

@@ -6,6 +6,18 @@ plugins {
     kotlin("multiplatform").version("1.9.0").apply(false)
 }
 
+buildscript {
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath ("org.jetbrains.kotlin:kotlin-serialization:1.9.0")
+    }
+}
+
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }

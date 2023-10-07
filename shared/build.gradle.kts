@@ -2,9 +2,13 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("kotlinx-serialization")
 }
 
 val mokoMvvmVersion = "0.16.1"
+val coroutinesVersion = "1.7.1"
+val ktorVersion = "2.3.2"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
@@ -52,8 +56,31 @@ kotlin {
                 api("dev.icerock.moko:mvvm-state:0.16.1")
                 api("dev.icerock.moko:mvvm-livedata-resources:0.16.1")
                 api("dev.icerock.moko:mvvm-flow-resources:0.16.1")
+
+                //ktor dependencies
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+
+                //for data serialization
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
             }
         }
+
+        val androidMain by getting{
+            dependencies {
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+            }
+        }
+
+        val iosMain by getting{
+            dependencies {
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+            }
+        }
+
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
