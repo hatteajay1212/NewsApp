@@ -10,6 +10,7 @@ object NetworkConfig{
 
 object ApiEndPoints{
     const val TOP_HEADLINES : String = "/v2/top-headlines"
+    const val TOP_HEADLINES_SOURCES : String = "/v2/top-headlines/sources"
 }
 
 object ApiParameters{

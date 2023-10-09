@@ -4,9 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ModelTopHeadlinesApiResponse(
-    val status : String,
-    val totalResults : Int,
-    val articles : ArrayList<ModelTopHeadlinesArticle>,
+    val status : String = "",
+    val totalResults : Int = 0,
+    val articles : ArrayList<ModelTopHeadlinesArticle> = arrayListOf(),
     val code : String? = "",
     val message : String ? = ""
 )

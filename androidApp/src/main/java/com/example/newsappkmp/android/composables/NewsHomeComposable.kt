@@ -24,10 +24,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.newsappkmp.viewModels.NewsHomeViewModel
 import io.kamel.image.KamelImage
@@ -102,7 +104,7 @@ fun NewsHomeComposable(navController : NavHostController,viewModel : NewsHomeVie
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .wrapContentHeight(),
-                                    style = MaterialTheme.typography.headlineSmall
+                                    style = MaterialTheme.typography.headlineMedium
                                 )
                             }
 
@@ -148,39 +150,39 @@ fun NewsHomeComposable(navController : NavHostController,viewModel : NewsHomeVie
             }
         }
 
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(16.dp)
+        Text(
+            text = "Trending Collections",
+            modifier = Modifier.padding(16.dp),
+            style = MaterialTheme.typography.labelLarge,
+            fontSize = 18.sp
         )
-
-        Text(text = "Trending Publications")
-
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(8.dp))
 
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
+                .wrapContentHeight().padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
         ){
             items(count = state.trendingPublicationsList.size){index ->
+
+                val modelTopHeadlinesSource = state.trendingPublicationsList.get(index)
                 Card(
                     modifier = Modifier
-                        .width(148.dp)
-                        .height(96.dp)
+                        .width(200.dp)
+                        .height(140.dp)
                         .padding(8.dp),
                     shape = RoundedCornerShape(
                         corner = CornerSize(size = 8.dp)
-                    )
+                    ),
                 ) {
-                    Text(
-                        text = state.trendingPublicationsList.get(index),
-                        modifier = Modifier
+                    modelTopHeadlinesSource.name?.let {
+                        Text(
+                            text = it,
+                            modifier = Modifier
                                 .padding(8.dp),
-                        textAlign = TextAlign.Center
-                    )
+                            style = MaterialTheme.typography.labelLarge,
+                            fontSize = 20.sp
+                        )
+                    }
                 }
             }
         }

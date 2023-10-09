@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
                 )
 
                 newsHomeViewModel.fetchTopHeadlines()
+                newsHomeViewModel.fetchTopHeadlinesSources()
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
