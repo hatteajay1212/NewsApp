@@ -2,13 +2,16 @@ import SwiftUI
 import shared
 
 struct ContentView: View {
-	let greet = Greeting().greet()
+    
+    var viewModel = NewsHomeViewModel(service: NewsApiServiceImpl())
 
 	var body: some View {
-        let preferences = SharedPrefrences()
-        let mobileNumber = preferences.getMobileNumber()
-		Text("mobile Number -> \(mobileNumber)")
-	}
+//        let preferences = SharedPrefrences()
+//        let mobileNumber = preferences.getMobileNumber()
+        Text("Hello").onAppear(perform: {
+            viewModel.fetchTopHeadlines()
+        })
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {

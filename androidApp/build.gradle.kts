@@ -48,4 +48,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.navigation:navigation-compose:2.7.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+
+    // for image loading
+    implementation("media.kamel:kamel-image:0.7.3")
 }

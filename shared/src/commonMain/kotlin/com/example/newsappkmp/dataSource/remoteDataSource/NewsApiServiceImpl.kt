@@ -4,6 +4,7 @@ import com.example.newsappkmp.Utils.ApiEndPoints
 import com.example.newsappkmp.Utils.ApiParameters
 import com.example.newsappkmp.Utils.Constants
 import com.example.newsappkmp.Utils.HttpErrorCodes
+import com.example.newsappkmp.Utils.HttpStatusDescription
 import com.example.newsappkmp.Utils.LanguageCodes
 import com.example.newsappkmp.Utils.NetworkConfig
 import com.example.newsappkmp.dataTransferObjects.ModelTopHeadlinesApiResponse
@@ -11,7 +12,9 @@ import com.example.newsappkmp.resultHandlers.ApiResponse
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
+import io.ktor.client.statement.HttpStatement
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.json.Json
 
 class NewsApiServiceImpl(
@@ -33,7 +36,16 @@ class NewsApiServiceImpl(
             val topHeadlinesApiResponseBody = response.bodyAsText()
             try {
                 val modelTopHeadlinesResponse = json.decodeFromString<ModelTopHeadlinesApiResponse>(topHeadlinesApiResponseBody)
-                ApiResponse.Success(data = modelTopHeadlinesResponse)
+
+                if (HttpStatusDescription.RESPONSE_SUCCESS == modelTopHeadlinesResponse.status){
+                    ApiResponse.Success(data = modelTopHeadlinesResponse)
+                }else{
+                    if (null != modelTopHeadlinesResponse.message){
+                        ApiResponse.Failure(errorCode = 0, errorMessage = modelTopHeadlinesResponse.message.toString())
+                    }else{
+                        ApiResponse.Failure(errorCode = 0, errorMessage = "Some Error Occurred")
+                    }
+                }
             }catch (e : Exception){
                 ApiResponse.Failure(errorCode = 0, errorMessage = e.message.toString())
             }

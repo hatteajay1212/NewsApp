@@ -1,6 +1,8 @@
 package com.example.newsappkmp.viewModels
 
 import com.example.newsappkmp.dataSource.remoteDataSource.NewsApiService
+import com.example.newsappkmp.dataTransferObjects.ModelTopHeadlinesArticle
+import com.example.newsappkmp.resultHandlers.ApiResponse
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,7 +16,7 @@ class NewsHomeViewModel(
     private val _newsHomeViewModelState = MutableStateFlow(NewsAppViewModelState())
 
     private val _mutableTrendingPublicationsListFlow = MutableStateFlow(arrayListOf<String>())
-    private val _mutableNewsListFlow = MutableStateFlow(arrayListOf<String>())
+    private val _mutableNewsListFlow = MutableStateFlow(arrayListOf<ModelTopHeadlinesArticle>())
 
     val state = combine(_newsHomeViewModelState,_mutableNewsListFlow,_mutableTrendingPublicationsListFlow){newsViewModelState,newsList,trendingPublicationsList ->
         newsViewModelState.copy(trendingPublicationsList = trendingPublicationsList,trendingNewsList = newsList)
@@ -22,12 +24,22 @@ class NewsHomeViewModel(
 
     fun fetchTopHeadlines(){
         viewModelScope.launch {
-            var result = service.getTopHeadlines()
+            val result = service.getTopHeadlines()
+
+            when(result){
+                is ApiResponse.Success -> {
+                    _mutableNewsListFlow.value = result.data?.articles ?: arrayListOf()
+                }
+
+                is ApiResponse.Failure -> {
+
+                }
+            }
         }
     }
 }
 
 data class NewsAppViewModelState(
     val trendingPublicationsList : ArrayList<String> = arrayListOf(),
-    val trendingNewsList : ArrayList<String> = arrayListOf()
+    val trendingNewsList : ArrayList<ModelTopHeadlinesArticle> = arrayListOf()
 )

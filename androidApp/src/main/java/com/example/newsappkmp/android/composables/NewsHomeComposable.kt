@@ -1,7 +1,7 @@
 package com.example.newsappkmp.android.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,23 +11,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.newsappkmp.viewModels.NewsHomeViewModel
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 
 @Composable
 fun NewsHomeComposable(navController : NavHostController,viewModel : NewsHomeViewModel){
@@ -38,72 +42,108 @@ fun NewsHomeComposable(navController : NavHostController,viewModel : NewsHomeVie
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
+
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(8.dp)
         ){
             items(
                 count = state.trendingNewsList.size
             ){index ->
+
+                val modelTrendingNews = state.trendingNewsList.get(index)
+
                 Card(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = 16.dp, top = 8.dp, end = 24.dp, bottom = 8.dp),
+                        .fillParentMaxWidth()
+                        .fillParentMaxHeight()
+                        .padding(16.dp),
                     shape = RoundedCornerShape(
                         corner = CornerSize(16.dp)
                     )
                 ) {
-                    Image(
-                        painter = painterResource(id = 0), contentDescription = null,
+
+                    Box(
                         modifier = Modifier.fillMaxSize()
-                    )
-
-                    IconButton(onClick = {
-
-                    }) {
-                        Icon(painter = painterResource(id = 0), contentDescription = null)
-                    }
-
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                    )
-
-                    Text(
-                        text = state.trendingNewsList.get(index),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .wrapContentHeight(),
-                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(
-                            text = "USA Today",
-                            modifier = Modifier.wrapContentHeight(),
-                            textAlign = TextAlign.Start
-                        )
+                        modelTrendingNews.urlToImage?.let {
+                            KamelImage(
+                                resource = asyncPainterResource(data = it), contentDescription = null,
+                                onFailure = {exception->
+                                    println("image loading exception -> ${exception.message}")
+                                },
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop,
+                                alpha = 0.5f,
+                            )
+                        }
 
-                        Text(
-                            text = "13/10/2022",
-                            modifier = Modifier.wrapContentHeight(),
-                            textAlign = TextAlign.End
-                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp)
+                        ) {
+                            IconButton(onClick = {
+
+                            }) {
+                                Icon(imageVector = Icons.Outlined.Favorite, contentDescription = null)
+                            }
+
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                            )
+
+                            modelTrendingNews.title?.let {
+                                Text(
+                                    text = it,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(),
+                                    style = MaterialTheme.typography.headlineSmall
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                modelTrendingNews.source.name?.let {
+                                    Text(
+                                        text = it,
+                                        textAlign = TextAlign.Start,
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
+                                }
+
+                                modelTrendingNews.publishedAt?.let {
+                                    Text(
+                                        text = it,
+                                        textAlign = TextAlign.End,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            modelTrendingNews.author?.let {
+                                Text(
+                                    text = it,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                        }
                     }
-
-                    Text(
-                        text = "Mary Walton",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                    )
                 }
             }
         }

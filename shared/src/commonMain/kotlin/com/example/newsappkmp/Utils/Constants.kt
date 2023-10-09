@@ -24,3 +24,8 @@ object LanguageCodes{
 object HttpErrorCodes{
     const val SUCCESS = 200
 }
+
+object HttpStatusDescription{
+    const val RESPONSE_SUCCESS = "ok"
+    const val RESPONSE_FAILURE = "error"
+}
