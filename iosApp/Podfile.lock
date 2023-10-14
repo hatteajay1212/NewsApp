@@ -1,8 +1,14 @@
 PODS:
   - shared (1.0)
+  - Zip (2.1.2)
 
 DEPENDENCIES:
   - shared (from `../shared`)
+  - Zip (~> 2.1.2)
+
+SPEC REPOS:
+  trunk:
+    - Zip
 
 EXTERNAL SOURCES:
   shared:
@@ -10,7 +16,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   shared: 6f71f8f4b9464b173cdc4b69d847a1a238e2258c
+  Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 23d25809de2a44df32eb6245e41ab3c55aae624c
+PODFILE CHECKSUM: 7bd15873c152b598e680fc2d19e966a92312a4db
 
 COCOAPODS: 1.13.0

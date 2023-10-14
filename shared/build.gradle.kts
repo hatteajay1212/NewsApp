@@ -65,6 +65,12 @@ kotlin {
 
                 //for data serialization
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+                // for date and time
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+
+                //for logging
+                implementation("co.touchlab:kermit:2.0.1")
             }
         }
 

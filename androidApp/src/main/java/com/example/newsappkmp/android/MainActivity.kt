@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.newsappkmp.android.composables.NewsHomeComposable
 import com.example.newsappkmp.dataSource.remoteDataSource.NewsApiServiceImpl
+import com.example.newsappkmp.Utilities.FileOperationsHandler
 import com.example.newsappkmp.viewModels.NewsHomeViewModel
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
             MyApplicationTheme {
                 val navController = rememberNavController()
                 val newsHomeViewModel : NewsHomeViewModel = NewsHomeViewModel(
-                    service = NewsApiServiceImpl()
+                    service = NewsApiServiceImpl(fileHandler = FileOperationsHandler(this))
                 )
 
                 newsHomeViewModel.fetchTopHeadlines()

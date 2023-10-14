@@ -18,4 +18,12 @@ actual class SharedPrefrences{
     actual fun getEmailId(): String {
         return NSUserDefaults.standardUserDefaults.stringForKey("key_email_id") ?: ""
     }
+
+    actual fun setCurrentLogFilePath(filePath: String) {
+        NSUserDefaults.standardUserDefaults.setObject(filePath,"key_log_file_path")
+    }
+
+    actual fun getCurrentLogFilePath(): String {
+        return NSUserDefaults.standardUserDefaults.stringForKey("key_log_file_path") ?: ""
+    }
 }

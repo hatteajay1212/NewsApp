@@ -1,5 +1,6 @@
 package com.example.newsappkmp.android.composables
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,24 +22,30 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.newsappkmp.android.Utils
+import com.example.newsappkmp.dataSource.SharedPrefrences
 import com.example.newsappkmp.viewModels.NewsHomeViewModel
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import java.io.File
 
 @Composable
 fun NewsHomeComposable(navController : NavHostController,viewModel : NewsHomeViewModel){
 
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -160,7 +167,8 @@ fun NewsHomeComposable(navController : NavHostController,viewModel : NewsHomeVie
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight().padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                .wrapContentHeight()
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
         ){
             items(count = state.trendingPublicationsList.size){index ->
 
@@ -186,5 +194,27 @@ fun NewsHomeComposable(navController : NavHostController,viewModel : NewsHomeVie
                 }
             }
         }
+
+        TextButton(onClick = {
+            zipLogFiles(context)
+        }) {
+            Text(text = "Send Logs")
+        }
     }
+}
+
+fun zipLogFiles(context : Context){
+    val sharedPreferences = SharedPrefrences(context)
+    val logFilePath = sharedPreferences.getCurrentLogFilePath()
+
+    val zipFilePath = context.filesDir.absolutePath.plus(File.separator).plus("Logs.zip")
+
+    println("ZIP FILE PATH --> $zipFilePath")
+
+    val logFile = File(logFilePath)
+    var logFilesList = arrayListOf(logFile)
+
+    val zipFile = File(zipFilePath)
+
+    Utils.zipFiles(logFilesList,zipFile)
 }

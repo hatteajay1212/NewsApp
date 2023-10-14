@@ -5,4 +5,8 @@ expect class SharedPrefrences{
     fun getMobileNumber() : String
     fun setEmailId(emailId : String)
     fun getEmailId() : String
+
+    fun setCurrentLogFilePath(filePath : String)
+
+    fun getCurrentLogFilePath() : String
 }

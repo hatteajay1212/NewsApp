@@ -2,6 +2,7 @@ package com.example.newsappkmp.dataSource
 
 import android.content.Context
 import android.content.SharedPreferences
+import java.util.TreeMap
 
 actual class SharedPrefrences(context : Context){
 
@@ -31,5 +32,15 @@ actual class SharedPrefrences(context : Context){
 
     actual fun getEmailId(): String {
         return sharedPreferences.getString("key_email_id", "") ?: ""
+    }
+
+    actual fun setCurrentLogFilePath(filePath: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString("key_log_file_path",filePath)
+        editor.apply()
+    }
+
+    actual fun getCurrentLogFilePath(): String {
+        return sharedPreferences.getString("key_log_file_path","") ?: ""
     }
 }
